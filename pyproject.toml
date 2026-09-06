@@ -1,0 +1,16 @@
+[project]
+name = "shopwise-recommender"
+version = "0.1.0"
+description = "Production-oriented personalized recommendation engine"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.5.5",
+    "polars>=1.44.1",
+    "psycopg>=3.3.5",
+    "pyarrow>=25.0.1",
+    "pydantic-settings>=2.15.0",
+    "python-dotenv>=1.2.3",
+    "pyyaml>=6.0.3",
+    "sqlalchemy>=2.0.52",
+]

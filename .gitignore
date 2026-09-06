@@ -1,0 +1,30 @@
+# Virtual environment
+.venv/
+
+# Environment variables / secrets
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Testing
+.pytest_cache/
+
+# Data files
+data/raw/
+data/interim/
+data/processed/
+*.parquet
+*.csv
+*.jsonl
+
+# ML experiment tracking
+mlruns/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
