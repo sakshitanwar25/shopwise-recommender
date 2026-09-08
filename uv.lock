@@ -2940,12 +2940,13 @@ wheels = [
 [[package]]
 name = "shopwise-recommender"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "datasets" },
     { name = "duckdb" },
     { name = "jupyter" },
     { name = "matplotlib" },
+    { name = "pandas" },
     { name = "polars" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pyarrow" },
@@ -2969,6 +2970,7 @@ requires-dist = [
     { name = "duckdb", specifier = ">=1.5.5" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = ">=3.11.1" },
+    { name = "pandas", specifier = ">=3.0.5" },
     { name = "polars", specifier = ">=1.44.1" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.5" },
     { name = "pyarrow", specifier = ">=25.0.1" },

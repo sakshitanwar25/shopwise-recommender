@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS categories (
 
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id TEXT PRIMARY KEY,
+    user_id BIGINT PRIMARY KEY,
     source_user_id TEXT UNIQUE NOT NULL,
     created_at TIMESTAMPTZ,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 
 CREATE TABLE IF NOT EXISTS items (
-    item_id TEXT PRIMARY KEY,
+    item_id BIGINT PRIMARY KEY,
     source_item_id TEXT UNIQUE NOT NULL,
     title TEXT,
     description TEXT,
@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE TABLE IF NOT EXISTS interaction_events (
     event_id BIGSERIAL PRIMARY KEY,
 
-    user_id TEXT NOT NULL
+    user_id BIGINT NOT NULL
         REFERENCES users(user_id),
 
-    item_id TEXT NOT NULL
+    item_id BIGINT NOT NULL
         REFERENCES items(item_id),
 
     event_type TEXT NOT NULL,
