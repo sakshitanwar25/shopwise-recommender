@@ -1,49 +1,90 @@
 # ShopWise Recommender
 
-A production-oriented personalized recommendation system built to explore modern recommendation algorithms, machine learning pipelines, backend engineering, and deployment.
+Production-oriented personalized recommendation engine built from real-world Amazon review data.
 
-## Project Goal
+The project is designed to demonstrate an end-to-end recommendation system pipeline including data ingestion, validation, temporal evaluation, collaborative filtering, ranking, API serving, PostgreSQL, and deployment.
 
-ShopWise Recommender is an end-to-end recommendation engine designed to recommend relevant products to users based on their historical interactions and item information.
+## Project Status
 
-The project will progress from simple recommendation baselines to more advanced candidate-generation and ranking approaches while following production-oriented data and software engineering practices.
+### Phase 1 — Data Engineering & Evaluation Setup
 
-## Phase 1 — Data Foundation
+Status: **Complete**
 
-The goal of Phase 1 is to build a clean, reproducible, and leakage-safe data pipeline.
+Completed:
 
-This phase will cover:
+- [x] Project structure and environment
+- [x] Raw dataset download
+- [x] Data ingestion with Polars
+- [x] Data cleaning and deduplication
+- [x] PostgreSQL schema
+- [x] PostgreSQL bulk loading
+- [x] Data validation
+- [x] Interaction filtering analysis
+- [x] 2/2 k-core candidate filtering
+- [x] Temporal 70/15/15 train/validation/test split
+- [x] Automated validation tests
+- [x] Phase 1 documentation
 
-* Dataset ingestion
-* Data validation
-* Data cleaning
-* Data transformation
-* Exploratory data analysis
-* Feature preparation
-* Temporal train/validation/test splitting
-* Parquet-based datasets
-* PostgreSQL integration
-* Data quality documentation
+Upcoming:
 
-## Project Structure
+- [ ] Train-only filtering / eligibility
+- [ ] Baseline recommender
+- [ ] Candidate generation
+- [ ] Ranking model
+- [ ] Offline evaluation
+- [ ] FastAPI serving
+- [ ] Dockerized inference
+- [ ] Monitoring and deployment
 
-* `data/` — Raw, intermediate, and processed datasets
-* `docs/` — Project decisions, data documentation, schema, and analysis reports
-* `notebooks/` — Exploratory analysis and experiments
-* `scripts/` — Pipeline entry points
-* `src/` — Reusable application and data-processing code
-* `sql/` — Database schema and indexes
-* `tests/` — Automated tests
-* `infra/` — Infrastructure configuration
+---
 
-## How to Run
+## Dataset
 
-Setup and execution instructions will be added as the project progresses.
+This project uses the **Amazon Reviews 2023** dataset from McAuley Lab.
 
-## Documentation
+Source:
 
-See the [`docs/`](docs/) directory for project decisions, data documentation, schema design, EDA results, and split reports.
+- Hugging Face: `McAuley-Lab/Amazon-Reviews-2023`
+- Category used: `All_Beauty`
 
-## Status
+The dataset contains user reviews, ratings, timestamps, helpfulness information, and item metadata.
 
-Project under active development.
+The original All_Beauty category contains approximately:
+
+- 632K users
+- 112.6K items
+- 701.5K ratings
+
+See [docs/data-card.md](docs/data-card.md) for the dataset details and limitations.
+
+---
+
+## Phase 1 Dataset Pipeline
+
+```text
+Raw Amazon Reviews
+        |
+        v
+Parquet ingestion
+        |
+        v
+Cleaning + normalization
+        |
+        v
+Deduplication
+        |
+        v
+PostgreSQL + processed Parquet
+        |
+        v
+Validation
+        |
+        v
+Filtering analysis
+        |
+        v
+Temporal splitting
+        |
+        +---- Train
+        +---- Validation
+        +---- Test
