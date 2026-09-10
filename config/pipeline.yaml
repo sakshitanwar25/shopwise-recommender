@@ -1,0 +1,8 @@
+data:
+  min_user_interactions: 2
+  min_item_interactions: 2
+
+paths:
+  processed_dir: data/processed
+  filtered_dir: data/processed/filtered
+
