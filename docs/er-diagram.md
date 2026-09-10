@@ -1,31 +1,39 @@
 # Entity Relationship Diagram
 
-## ShopWise Recommender Database
+## 1. Overview
+
+ShopWise uses PostgreSQL as the application-oriented relational database.
+
+The main entities are:
+
+- `users`
+- `items`
+- `categories`
+- `interaction_events`
+
+The central relationship is between users, items, and their interaction
+events.
+
+---
+
+## 2. ER Diagram
 
 ```mermaid
 erDiagram
 
+    USERS ||--o{ INTERACTION_EVENTS : creates
+    ITEMS ||--o{ INTERACTION_EVENTS : receives
     CATEGORIES ||--o{ ITEMS : contains
 
-    USERS ||--o{ INTERACTION_EVENTS : creates
-
-    ITEMS ||--o{ INTERACTION_EVENTS : receives
-
-
-    CATEGORIES {
-        BIGINT category_id PK
-        TEXT category_path UK
-    }
-
     USERS {
-        TEXT user_id PK
+        BIGINT user_id PK
         TEXT source_user_id UK
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
     }
 
     ITEMS {
-        TEXT item_id PK
+        BIGINT item_id PK
         TEXT source_item_id UK
         TEXT title
         TEXT description
@@ -39,10 +47,15 @@ erDiagram
         TIMESTAMPTZ updated_at
     }
 
+    CATEGORIES {
+        BIGINT category_id PK
+        TEXT category_path UK
+    }
+
     INTERACTION_EVENTS {
         BIGINT event_id PK
-        TEXT user_id FK
-        TEXT item_id FK
+        BIGINT user_id FK
+        BIGINT item_id FK
         TEXT event_type
         NUMERIC rating
         NUMERIC event_value

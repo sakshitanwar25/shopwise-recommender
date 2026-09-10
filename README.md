@@ -2,13 +2,15 @@
 
 Production-oriented personalized recommendation engine built from real-world Amazon review data.
 
-The project is designed to demonstrate an end-to-end recommendation system pipeline including data ingestion, validation, temporal evaluation, collaborative filtering, ranking, API serving, PostgreSQL, and deployment.
+The project demonstrates an end-to-end recommendation system workflow covering data engineering, validation, temporal evaluation, recommendation baselines, candidate generation, ranking, API serving, and deployment.
+
+---
 
 ## Project Status
 
 ### Phase 1 — Data Engineering & Evaluation Setup
 
-Status: **Complete**
+**Status: Complete**
 
 Completed:
 
@@ -20,7 +22,7 @@ Completed:
 - [x] PostgreSQL bulk loading
 - [x] Data validation
 - [x] Interaction filtering analysis
-- [x] 2/2 k-core candidate filtering
+- [x] 2/2 k-core candidate filtering analysis
 - [x] Temporal 70/15/15 train/validation/test split
 - [x] Automated validation tests
 - [x] Phase 1 documentation
@@ -28,10 +30,11 @@ Completed:
 Upcoming:
 
 - [ ] Train-only filtering / eligibility
-- [ ] Baseline recommender
+- [ ] Popularity baseline
+- [ ] Collaborative filtering baseline
 - [ ] Candidate generation
 - [ ] Ranking model
-- [ ] Offline evaluation
+- [ ] Offline Top-K evaluation
 - [ ] FastAPI serving
 - [ ] Dockerized inference
 - [ ] Monitoring and deployment
@@ -42,49 +45,74 @@ Upcoming:
 
 This project uses the **Amazon Reviews 2023** dataset from McAuley Lab.
 
-Source:
+**Category:** `All_Beauty`
 
-- Hugging Face: `McAuley-Lab/Amazon-Reviews-2023`
-- Category used: `All_Beauty`
+The dataset contains user reviews, ratings, timestamps, helpfulness information, user identifiers, product identifiers, and review metadata.
 
-The dataset contains user reviews, ratings, timestamps, helpfulness information, and item metadata.
+The original dataset spans May 1996 to September 2023.
 
-The original All_Beauty category contains approximately:
-
-- 632K users
-- 112.6K items
-- 701.5K ratings
-
-See [docs/data-card.md](docs/data-card.md) for the dataset details and limitations.
+See [`docs/data-card.md`](docs/data-card.md) for dataset details, processing decisions, and limitations.
 
 ---
 
-## Phase 1 Dataset Pipeline
+## Recommendation Objective
+
+The goal is **personalized Top-K recommendation**, not simply rating prediction.
+
+Given a user's historical interactions, the system will:
+
+1. Generate candidate products.
+2. Rank the candidates according to the user's preferences.
+3. Return the Top-K products most likely to be relevant to the user.
+
+The system will eventually evaluate:
+
+- Candidate retrieval quality
+- Ranking quality
+- Precision@K
+- Recall@K
+- NDCG@K
+- Popularity bias
+- Cold-start behavior
+- Inference latency
+- Serving reliability
+
+---
+
+## Phase 1 Pipeline
 
 ```text
-Raw Amazon Reviews
-        |
-        v
-Parquet ingestion
-        |
-        v
-Cleaning + normalization
-        |
-        v
-Deduplication
-        |
-        v
-PostgreSQL + processed Parquet
-        |
-        v
-Validation
-        |
-        v
-Filtering analysis
-        |
-        v
-Temporal splitting
-        |
-        +---- Train
-        +---- Validation
-        +---- Test
+                Amazon Reviews
+                       |
+                       v
+                Raw Parquet Data
+                       |
+                       v
+              Ingestion + Cleaning
+                       |
+                       v
+                Deduplication
+                       |
+                       v
+             Stable User/Item IDs
+                       |
+              +--------+--------+
+              |                 |
+              v                 v
+      Processed Parquet     PostgreSQL
+              |                 |
+              +--------+--------+
+                       |
+                       v
+                 Data Validation
+                       |
+                       v
+              Filtering Analysis
+                       |
+                       v
+             Temporal Splitting
+                       |
+              +--------+--------+
+              |        |        |
+              v        v        v
+            Train  Validation  Test
