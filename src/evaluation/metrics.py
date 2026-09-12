@@ -2,11 +2,9 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping, Sequence
-from typing import TypeAlias
 
-
-Item: TypeAlias = int | str
-GradedRelevance: TypeAlias = Mapping[Item, float]
+type Item = int | str
+type GradedRelevance = Mapping[Item, float]
 
 
 def _validate_k(k: int) -> None:

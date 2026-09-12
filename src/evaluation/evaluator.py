@@ -34,26 +34,15 @@ def evaluate_recommender(
     interactions: Sequence[Mapping[str, object]],
     recommender: Recommender,
     k: int = 10,
+    evaluation_split: str = "validation",
 ) -> EvaluationResult:
     """
-    Evaluate a recommender using held-out interactions.
+    Evaluate a recommender using one held-out split.
 
     Each interaction must contain:
         user_id
         item_id
         split
-
-    Expected split values:
-        train
-        validation
-        test
-
-    For each validation/test user:
-        1. Build history only from training interactions.
-        2. Use held-out interactions as relevant items.
-        3. Generate Top-K recommendations.
-        4. Calculate ranking metrics.
-        5. Average metrics across evaluated users.
 
     The recommender receives:
         user_id
@@ -64,6 +53,11 @@ def evaluate_recommender(
     """
     if k <= 0:
         raise ValueError("k must be greater than 0")
+
+    if evaluation_split not in {"validation", "test"}:
+        raise ValueError(
+            "evaluation_split must be 'validation' or 'test'"
+        )
 
     train_history: dict[int, list[int]] = {}
     held_out_items: dict[int, set[int]] = {}
@@ -76,8 +70,11 @@ def evaluate_recommender(
         if split == "train":
             train_history.setdefault(user_id, []).append(item_id)
 
-        elif split in {"validation", "test"}:
+        elif split == evaluation_split:
             held_out_items.setdefault(user_id, set()).add(item_id)
+
+        elif split in {"validation", "test"}:
+            continue
 
         else:
             raise ValueError(f"Unsupported split: {split}")
